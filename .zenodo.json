@@ -6,7 +6,7 @@
       "name": "DannyExperiments"
     }
   ],
-  "description": "<p>Given two language expressions and a rational threshold, we decide if assigning finite languages to their variables makes the discounted symmetric-difference distance d₂ at most the threshold. The grammar uses finite constants, Boolean operations, and left concatenation by finite constants. The proof completes the optimal-transition construction proposed in Marantidis’s dissertation.</p><p>Includes the paper, source, proof outline, internal review, exact replay and an offline teaching explorer. Internally reviewed, not peer reviewed.</p><p>Under human direction, ChatGPT Astra 6.2 (OpenAI) generated the discovery proof and its research packet. Claude Opus 5.5 (Anthropic) assisted with earlier audits and manuscript preparation. OpenAI Codex performed the mathematical review and revised the paper. GPT-6.2 Sol assisted with literature searches and release preparation. DannyExperiments maintains the repository and is the preferred citation identity. No AI system is proposed as an author.</p>",
+  "description": "<p>Given two language expressions and a rational threshold, this paper decides whether assigning finite languages to their variables makes the discounted symmetric-difference distance d₂ at most that threshold. The expressions use finite language constants, Boolean operations and left concatenation by finite constants.</p><p>Marantidis already computed the infimum and proposed retaining optimal transitions to test finite attainment. This paper proves the optimal-transition characterization and completes that construction for d₂. It also gives a finite witness when the answer is affirmative.</p><p>Includes the manuscript, LaTeX source and bibliography, proof outline, exact replay, internal review and offline explorer. Internally reviewed, not peer reviewed.</p><p>Under human direction, ChatGPT Astra 6.2 (OpenAI) generated the discovery proof and its research packet. Claude Opus 5.5 (Anthropic) assisted with earlier audits and manuscript preparation. OpenAI Codex performed the mathematical review and revised the paper. GPT-6.2 Sol assisted with literature searches and release preparation. DannyExperiments maintains the repository and is the preferred citation identity. No AI system is proposed as an author.</p>",
   "keywords": [
     "language equations",
     "finite attainment",
@@ -14,5 +14,15 @@
     "tree automata"
   ],
   "license": "other-closed",
-  "notes": "All rights reserved. No repository-wide reuse license is granted."
+  "notes": "All rights reserved. Publicly downloadable files are supplied without a repository-wide reuse license.",
+  "publication_date": "2026-11-27",
+  "version": "1.0.0",
+  "access_right": "open",
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/DannyExperiments/finite-language-distance-attainment/releases/tag/v1.0.0",
+      "relation": "isSupplementTo",
+      "resource_type": "software"
+    }
+  ]
 }

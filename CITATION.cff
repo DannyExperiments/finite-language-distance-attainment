@@ -1,13 +1,26 @@
 cff-version: 1.2.0
-message: "Please cite DannyExperiments and identify the version used."
+message: "Cite this version of the research release."
 title: "Finite attainment for approximate language equations"
-type: software
 authors:
   - name: "DannyExperiments"
+type: software
+version: "1.0.0"
+date-released: 2026-11-27
 repository-code: "https://github.com/DannyExperiments/finite-language-distance-attainment"
-abstract: "A decision procedure for the non-strict discounted symmetric-difference threshold for language equations with finite assignments."
 keywords:
   - "language equations"
   - "finite attainment"
   - "discounted distance"
   - "tree automata"
+doi: "10.5281/zenodo.24569242"
+url: "https://doi.org/10.5281/zenodo.24569242"
+preferred-citation:
+  type: software
+  title: "Finite attainment for approximate language equations"
+  authors:
+    - name: "DannyExperiments"
+  version: "1.0.0"
+  date-released: 2026-11-27
+  doi: "10.5281/zenodo.24569242"
+  url: "https://doi.org/10.5281/zenodo.24569242"
+  repository-code: "https://github.com/DannyExperiments/finite-language-distance-attainment"

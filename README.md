@@ -9,6 +9,7 @@ Can finite languages be assigned to the variables of two expressions so that the
 [![Repository verification](https://github.com/DannyExperiments/finite-language-distance-attainment/actions/workflows/verify.yml/badge.svg?branch=main)](https://github.com/DannyExperiments/finite-language-distance-attainment/actions/workflows/verify.yml)
 [![Replay verification](https://github.com/DannyExperiments/finite-language-distance-attainment/actions/workflows/replay.yml/badge.svg?branch=main)](https://github.com/DannyExperiments/finite-language-distance-attainment/actions/workflows/replay.yml)
 [![PDF build](https://github.com/DannyExperiments/finite-language-distance-attainment/actions/workflows/pdf.yml/badge.svg?branch=main)](https://github.com/DannyExperiments/finite-language-distance-attainment/actions/workflows/pdf.yml)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24569242.svg)](https://doi.org/10.5281/zenodo.24569242)
 
 ## Same infimum, different answer
 
@@ -16,7 +17,7 @@ Can finite languages be assigned to the variables of two expressions so that the
 
 Compare $\{a,b\}\cdot X$ with two targets. The empty word is always a disagreement and contributes $1/2$. With target $\{\epsilon,a,b\}$, taking $X=\{\epsilon\}$ gives exactly $1/2$. With target $\Sigma^*$, every finite $X$ leaves some nonempty words in disagreement. Keeping all words through depth $h$ gives distance $1/2+2^{-h-2}$, so the infimum is $1/2$ even though the decision at that threshold is negative.
 
-[Download the offline explorer ZIP](visualization/finite-language-distance-attainment-explorer.zip?raw=1) · [Worked example and rendering guide](visualization/README.md)
+[Download the offline explorer ZIP](https://raw.githubusercontent.com/DannyExperiments/finite-language-distance-attainment/v1.0.0/visualization/finite-language-distance-attainment-explorer.zip) · [Worked example and rendering guide](visualization/README.md)
 
 ## Proof idea
 
@@ -29,3 +30,5 @@ Marantidis already computed the infimum and proposed retaining optimal transitio
 The replay checks exact infima and finite witnesses, compares the compiler with direct word membership, and exhaustively checks the attainment condition on 1,296 small controllers. [Reproduce the checks](REPRODUCIBILITY.md) · [Review status](STATUS.md) · [Claim scope](CLAIM_SCOPE_AND_LIMITATIONS.md)
 
 DannyExperiments is the preferred citation identity. [Citation metadata](CITATION.cff) · [Research disclosure](AI_DISCLOSURE.md)
+
+[Release v1.0.0](https://github.com/DannyExperiments/finite-language-distance-attainment/releases/tag/v1.0.0) · [Version DOI](https://doi.org/10.5281/zenodo.24569242) · [Citation](CITATION.cff)

@@ -1,6 +1,6 @@
 # At the threshold
 
-[Download the offline explorer ZIP](finite-language-distance-attainment-explorer.zip?raw=1). Extract it and open index.html. Move the cutoff and rotation sliders, or drag either tree to rotate it.
+[Download the offline explorer ZIP](https://raw.githubusercontent.com/DannyExperiments/finite-language-distance-attainment/v1.0.0/visualization/finite-language-distance-attainment-explorer.zip). Extract it and open index.html. Move the cutoff and rotation sliders, or drag either tree to rotate it.
 
 The alphabet is $\{a,b\}$. For both comparisons, the left expression is $\{a,b\}\cdot X$. At a node labeled by a nonempty word, membership on the left is the membership of the word's parent in $X$. The empty word $\epsilon$ always disagrees and contributes $1/2$.
 

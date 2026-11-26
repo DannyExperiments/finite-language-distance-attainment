@@ -1,4 +1,4 @@
-# Candidate inventory
+# Release manifest
 
 - `.github/workflows/pdf.yml`
 - `.github/workflows/replay.yml`
