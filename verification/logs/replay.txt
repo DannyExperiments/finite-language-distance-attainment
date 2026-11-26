@@ -1,0 +1,5 @@
+12 exact infimum and finite-attainment fixtures passed.
+Both positive-infimum teaching examples and seven finite cutoffs passed.
+4,760 direct word-membership comparisons across 80 seeded expression pairs passed.
+1296 controllers checked; finite-support optimum depends on initial state in 102 cases.
+PASS: exact rational values, finite witnesses, truncations and controller invariants.

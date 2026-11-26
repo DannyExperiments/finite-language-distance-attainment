@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Finite attainment on the word tree</title>
+<style>
+:root{color-scheme:dark;background:#0e1a27;color:#f0f6fc;font:16px/1.5 system-ui,sans-serif;--card:#13283b;--muted:#b1c7db;--gold:#ffd07b;--blue:#80c9f5;--border:#2d4a63}
+*{box-sizing:border-box}
+body{max-width:980px;margin:auto;padding:clamp(14px,4vw,32px)}
+h1{font-size:clamp(1.9rem,5vw,2.8rem);line-height:1.12;margin:.25em 0 .42em}
+h2{font-size:1.2rem;margin:.08em 0 .35em}
+p{margin:.35em 0 .85em}
+header p,.muted{color:var(--muted)}
+math,code{color:var(--blue)}
+.count{font-weight:750;color:var(--gold);font-size:1.25rem}
+.same{color:var(--blue)}
+.card,.controls,.note{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:clamp(13px,3vw,23px);margin:1em 0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.grid .card{margin:0;min-width:0}
+canvas{width:100%;height:auto;aspect-ratio:4/3;display:block;background:#0e2335;border-radius:10px;touch-action:none}
+label{display:flex;align-items:center;gap:11px;font-size:.97rem}
+input[type=range]{width:100%;flex:1;min-width:85px;min-height:38px;accent-color:var(--gold)}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.marker{display:inline-block;width:.7em;height:.7em;border-radius:50%;margin-right:.4em;background:var(--gold)}
+.marker.blue{background:var(--blue)}
+@media(max-width:670px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+<h1>Does a finite assignment attain it?</h1>
+<p>Both examples have infimum <strong>1/2</strong>. At this exact threshold, the two decisions differ.</p>
+</header>
+<section class="controls" aria-label="Tree controls">
+<p>The alphabet is <strong>{a, b}</strong>. The left expression in both cases is <strong>{a, b} · X</strong>. It contains a nonempty word exactly when the word obtained by stripping its first letter lies in <strong>X</strong>.</p>
+<label for="horizon">Full-target cutoff for X <input id="horizon" type="range" min="0" max="2" step="1" value="0"> <output id="depth" for="horizon">0</output></label>
+<label for="angle">Rotate the trees <input id="angle" type="range" min="0" max="360" value="31"></label>
+<p class="muted"><span class="marker"></span>Disagreement &nbsp; <span class="marker blue"></span>Agreement. Each dot is one output word. The drawing stops at depth 4.</p>
+</section>
+<div class="grid">
+<section class="card">
+<h2>Finite target</h2>
+<p>Compare with <strong>{ε, a, b}</strong>. Taking <strong>X = {ε}</strong> leaves a disagreement only at the empty word ε.</p>
+<canvas id="finite" width="640" height="480" role="img" aria-label="Finite target. The root is the only disagreement in the binary tree."></canvas>
+<p class="count">Cost <output>1/2</output> <span class="same">· Attained</span></p>
+</section>
+<section class="card">
+<h2>Full word tree</h2>
+<p>Compare with <strong>Σ*</strong>. Here <strong>X</strong> contains all words through the chosen finite cutoff.</p>
+<canvas id="infinite" width="640" height="480" role="img" aria-label="Full target. The root and the tail below the cutoff disagree."></canvas>
+<div aria-live="polite">
+<p class="count">Cost <output id="cost" for="horizon">3/4</output></p>
+<p class="muted" id="tail">Disagreement starts again at depth 2. The cost stays above 1/2.</p>
+</div>
+</section>
+</div>
+<section class="note">
+<h2>Why equality matters</h2>
+<p>The root always costs <strong>1/2</strong>. With the full target and <strong>X</strong> supported through depth <strong>h</strong>, all output words at depths <strong>1</strong> to <strong>h+1</strong> agree. The remaining tail has mass <strong>2<sup>−h−2</sup></strong>. Equality with <strong>1/2</strong> needs every nonempty word to agree, which forces <strong>X = Σ*</strong>.</p>
+<p class="muted">The diagram shows two exact instances. The proof uses optimal transitions and a common zero cutoff to decide equality in the full stated grammar.</p>
+</section>
+<script>
+"use strict";
+const horizon = document.querySelector("#horizon");
+const angle = document.querySelector("#angle");
+const finite = document.querySelector("#finite");
+const infinite = document.querySelector("#infinite");
+const nodes = Array.from({length:5}, (_,d)=>Array.from({length:2**d},(_,i)=>({d,i})));
+function project(d,i,turn) {
+  const phase = turn + 2*Math.PI*(i+.5)/2**d;
+  const radius = d ? .47 + .075*d : 0;
+  const front = radius*Math.sin(phase);
+  const scale = 254*6/(6+front);
+  return [320+scale*radius*Math.cos(phase),48+92*d-34*front,front];
+}
+function paint(canvas, all, n, turn) {
+  const ctx=canvas.getContext("2d");
+  const coords=nodes.map(level=>level.map(({d,i})=>project(d,i,turn)));
+  const bad=d=>d===0 || (all && d>=n+2);
+  ctx.clearRect(0,0,640,480);
+  for (let d=1;d<coords.length;d++) {
+    coords[d].forEach(([x,y],i)=>{
+      const [x0,y0]=coords[d-1][Math.floor(i/2)];
+      ctx.strokeStyle=bad(d)&&bad(d-1)?"#ffd07b":"#58718a";
+      ctx.lineWidth=3;
+      ctx.beginPath();
+      ctx.moveTo(x0,y0);
+      ctx.lineTo(x,y);
+      ctx.stroke();
+    });
+  }
+  coords.flatMap((level,d)=>level.map(([x,y,z])=>({x,y,z,d})))
+    .sort((a,b)=>b.z-a.z)
+    .forEach(({x,y,d})=>{
+      ctx.beginPath();
+      ctx.arc(x,y,d?10:14,0,2*Math.PI);
+      ctx.fillStyle=bad(d)?"#ffd07b":"#80c9f5";
+      ctx.fill();
+      ctx.lineWidth=2;
+      ctx.strokeStyle="#0e2335";
+      ctx.stroke();
+    });
+  ctx.font="bold 26px system-ui";
+  ctx.fillStyle="#eaf3fa";
+  ctx.fillText("ε",345,53);
+}
+function render() {
+  const h=Number(horizon.value);
+  const turn=Number(angle.value)*Math.PI/180;
+  const denominator=2**(h+2);
+  document.querySelector("#depth").textContent=String(h);
+  document.querySelector("#cost").textContent=(denominator/2+1)+"/"+denominator;
+  document.querySelector("#tail").textContent="Disagreement starts again at depth "+(h+2)+". The cost stays above 1/2.";
+  paint(finite,false,h,turn);
+  paint(infinite,true,h,turn);
+}
+horizon.addEventListener("input",render);
+angle.addEventListener("input",render);
+for (const canvas of [finite,infinite]) {
+  let control=null;
+  canvas.addEventListener("pointerdown",event=>{
+    canvas.setPointerCapture(event.pointerId);
+    control={id:event.pointerId,start:event.clientX,base:Number(angle.value)};
+  });
+  canvas.addEventListener("pointermove",event=>{
+    if(control?.id!==event.pointerId) return;
+    angle.value=String((control.base+Math.round((event.clientX-control.start)*1.35)%360+360)%360);
+    render();
+  });
+  canvas.addEventListener("lostpointercapture",()=>{control=null;});
+}
+render();
+</script>
+</body>
+</html>

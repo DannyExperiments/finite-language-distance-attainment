@@ -1,0 +1,100 @@
+\documentclass[11pt,a4paper]{amsart}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amssymb}
+\usepackage[hidelinks]{hyperref}
+\urlstyle{same}
+\hypersetup{pdftitle={Finite attainment for approximate language equations}}
+\DeclareMathSizes{8}{8}{8}{8}
+\DeclareMathSizes{9}{9}{8}{8}
+\DeclareMathSizes{10.95}{10.95}{8}{8}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\title{Finite attainment for approximate language equations}
+\date{}
+\begin{document}
+\begin{abstract}
+Given two language expressions and a rational threshold, we decide whether assigning finite languages to their variables makes the discounted symmetric-difference distance \(d_2\) at most that threshold. Marantidis computed the infimum and proposed keeping only optimal transitions to test finite attainment. We prove that positive discount weights make an assignment optimal exactly when every action is optimal in its local Bellman equation. A pair of finite set iterations then decides whether an optimal assignment has finite support and constructs one when it exists. This completes the proposed construction for \(d_2\).
+\end{abstract}
+\maketitle
+
+\section{The non-strict question}
+Fix a finite nonempty alphabet \(\Sigma\) and put \(k=|\Sigma|\). An expression is a language constant \(K\), a variable \(X_i\), a union, intersection or complement of expressions, or \(K\cdot E\) for a constant \(K\) and expression \(E\). Every constant is a finite subset of \(\Sigma^*\). The assignment \(\sigma\) sends each variable to a language. It evaluates the Boolean operations on subsets of \(\Sigma^*\) and takes \(K\cdot E\) to \(\{uv:u\in K,\ v\in\sigma(E)\}\). An assignment is finite when each variable image is finite. Evaluated expressions may still be infinite because complement is relative to \(\Sigma^*\). A closed expression such as \(\sim\varnothing\) may serve as an equation side. Each left factor is an explicitly supplied finite constant.
+
+For languages \(M,N\) define
+\[
+ d_2(M,N)=\tfrac12\sum_{w\in M\triangle N}\beta^{|w|},
+ \qquad \beta=(2k)^{-1}.
+\]
+The entire tree has mass one. Given \(\varphi,\psi\) and a rational \(p\ge0\), the question is whether some finite assignment \(\sigma\) satisfies \(d_2(\sigma(\varphi),\sigma(\psi))\le p\).
+
+Marantidis \cite[Sections~6.2--6.3]{marantidis}, building on Baader, Marantidis and Okhotin \cite{bmo}, computes the infimum and proves that the infimum is the same for finite and unrestricted assignments. This suffices for the strict threshold. At equality, Section~6.4 proposes retaining optimal transitions and applying the finite-run test of Lemma~3.43 \cite{marantidis}, an approach originating in Baader and Okhotin \cite{bo}. We make the optimal-transition step explicit for \(d_2\) and implement the finite-run test in the resulting finite controller.
+
+\begin{theorem}\label{theo:main}
+For expressions in the stated grammar the non-strict threshold question is decidable. We can compute the rational infimum \(V_0\), decide whether a finite assignment attains \(V_0\), and produce a finite assignment whenever the answer at \(p\) is yes.
+\end{theorem}
+
+This concerns a single approximate language equation with any finite number of variables. The language of equation~(4.7) and the finite-assignment convention of Definition~4.9 in \cite{marantidis} agree with this scope. Reversing each word in the constants and variable images yields the uniform right-concatenation version, since reversal preserves word lengths, finiteness and symmetric difference. Arbitrary two-sided or variable concatenation, other metrics, and concept-distance questions with additional constraints fall outside the theorem.
+
+\section{A finite controller}
+View \(\Sigma^*\) as a tree rooted at the empty word \(\epsilon\), with child \(aw\) for each \(a\in\Sigma\) at \(w\). An action \(b(w)\) is the membership vector of \(w\) in the \(m\) input variables. The finite action set is \(D=\{0,1\}^m\). All choices on the tree define an assignment. The assignment is finite exactly when there is a depth from which all actions are zero.
+
+Testing membership in an expression at \(w\) evaluates Boolean operations at \(w\) and, for \(K\cdot E\), tries each \(u\in K\) that is a prefix of \(w\), then evaluates \(E\) after dropping \(u\). This visits the ancestors obtained by stripping bounded prefixes. Let \(L\) bound the total length stripped on any syntax path in either expression. The sum, over concatenation occurrences, of the longest words in their left constants is sufficient, using zero for an empty constant. Let \(J\) bound the word lengths of constants that occur as expressions, and put \(H=L+J\). A state \(q\) records, before the action at \(w\),
+\begin{itemize}
+\item its prefix of length \(\min(H,|w|)\) and length capped at \(H+1\),
+\item the last \(L\) membership vectors at the proper ancestors, or all such vectors if there are fewer.
+\end{itemize}
+At recursion offset \(j\le L\) the prefix tests inspect at most \(L\) letters of \(w\), and a constant membership test needs at most \(H\) letters and the capped length. The current action or a stored vector supplies each variable bit. Empty prefixes consume no letters. Thus these data determine the mismatch bit of \(\varphi,\psi\). Write \(c(q,b)\) for half this bit.
+
+Once \(b\) is chosen, the child state \(q_a(q,b)\) prepends \(a\) to the stored prefix and truncates it, increments the capped length and shifts the action into the ancestor history. Starting at the empty root state \(q_0\), enumerate all reachable states under arbitrary actions and child letters. This gives an effective finite state set \(Q\) and all transitions. In particular the cost of an assignment is
+\[
+ d_2(\sigma(\varphi),\sigma(\psi))
+   =\sum_{w\in\Sigma^*}\beta^{|w|}c(q_w,b(w)).
+\]
+
+\section{Infimum and optimal actions}
+Define the operator \(T\) on state vectors by
+\[
+ (TU)(q)=\min_{b\in D}\left\{c(q,b)+\beta\sum_{a\in\Sigma} U(q_a(q,b))\right\}.
+\]
+It maps \([0,1]^Q\) into itself and is a contraction in the supremum norm with constant \(k\beta=1/2\). Let \(V\) be its unique fixed point. It can be found exactly using rational linear programming. Maximize \(\sum_q U(q)\) subject to \(0\le U(q)\le1\) and the upper inequality from each action. Feasibility implies \(U\le TU\), so monotonicity and contraction give \(U\le V\). The vector \(V\) itself is feasible, so it is the unique optimum. Alternatively, enumerate stationary policies, solve the linear equations for each policy, and check its Bellman inequalities. Each system has an invertible coefficient matrix since the discounted transition part has row sums \(1/2\), and choosing a minimizing action at each state of \(V\) gives a policy that passes.
+
+Let
+\[
+ \Delta(q,b)=c(q,b)+\beta\sum_{a\in\Sigma}V(q_a(q,b))-V(q).
+\]
+Every gap is nonnegative. For any assignment, summing the gaps through depth \(h\) cancels every interior occurrence of \(V\). The remaining boundary term is the weighted sum of \(V\) at depth \(h+1\), whose total weight is \(2^{-h-1}\). Both this boundary term and the tail of the cost vanish as \(h\to\infty\). Therefore
+\begin{equation}\label{eq:gap}
+ d_2(\sigma(\varphi),\sigma(\psi))-V(q_0)
+   =\sum_{w\in\Sigma^*}\beta^{|w|}\Delta(q_w,b(w)).
+\end{equation}
+In particular the minimum over unrestricted assignments is \(V(q_0)\), since taking a minimizing action at every state makes all gaps zero. Equation~\eqref{eq:gap} also proves the converse: all weights are positive, so every assignment attaining \(V(q_0)\) uses only zero-gap actions. This is the required optimal-transition characterization.
+
+Truncate an optimal assignment by keeping the actions through depth \(h\) and assigning zero vectors deeper in the tree. Since state updates along any path depend only on earlier actions, the costs through depth \(h\) stay the same. The mass below the cutoff is \(2^{-h-1}\), so the new cost is at most \(V(q_0)+2^{-h-1}\). The infimum over finite assignments is consequently \(V_0=V(q_0)\). Given \(p>V_0\), this also supplies a finite witness by choosing \(h\) with \(2^{-h-1}\le p-V_0\).
+
+\section{Finite attainment at equality}
+Let \(\operatorname{Opt}(q)=\{b:\Delta(q,b)=0\}\). First find the greatest set \(Z\subseteq Q\) such that for each \(q\in Z\) the zero action lies in \(\operatorname{Opt}(q)\) and all \(q_a(q,0)\) belong to \(Z\). Start from \(Q\) and delete states violating either rule until the set stabilizes. Exactly the states in \(Z\) admit a zero-only optimal subtree. Indeed, staying in \(Z\) gives such a subtree. Conversely, the states used anywhere in a zero-only optimal subtree satisfy both rules and hence lie in \(Z\).
+
+Start with \(R_0=Z\) and repeat
+\[
+ R_{j+1}=R_j\cup\{q:\ \text{some }b\in\operatorname{Opt}(q)
+                     \text{ has }q_a(q,b)\in R_j\text{ for every }a\in\Sigma\}.
+\]
+By induction \(R_j\) consists of states admitting an optimal subtree whose actions are zero from relative depth \(j\) onward. For the step, fix an admissible action and use a suitable subtree at each child. Conversely, an optimal subtree zero from depth \(j+1\) has exactly such child subtrees. The inclusion of \(R_j\) records that a zero cutoff may be postponed. The state contains all information needed by a child, and its descendants impose no conditions on the actions chosen in other child subtrees.
+
+The increasing sequence stabilizes at a set \(R\). Thus there is a finite optimal assignment exactly when \(q_0\in R\). When this holds, choose a minimizing action that sends each child to an earlier set until it is in \(Z\), then always take zero. The resulting word sets are finite and can be listed. This is a direct implementation of the finite-run step that Marantidis proposes. A finite cutoff applies to the whole tree, so a test of each branch in isolation would be insufficient.
+
+To decide the question, compare \(p\) with \(V_0\). For \(p<V_0\) there is no witness. For \(p>V_0\) use truncation. For \(p=V_0\) test membership of \(q_0\) in \(R\). This proves Theorem~\ref{theo:main}.
+
+\section{Worked examples}
+With \(\Sigma=\{a\}\), the comparison of \(X\) with \(\{a\}\cdot X\) attains its zero infimum at \(X=\varnothing\). The comparison of \(X\) with \(\Sigma^*\) has the same zero infimum. Every finite \(X\) misses words, but taking all words through depth \(h\) gives cost \(2^{-h-1}\).
+
+For positive infima take \(\Sigma=\{a,b\}\) and set \(\varphi=\{a,b\}\cdot X\). The empty word is never in \(\varphi\). For \(\psi=\{\epsilon,a,b\}\) the minimum \(1/2\) is attained by \(X=\{\epsilon\}\), since only the root disagrees. For \(\psi=\Sigma^*\), the same root contributes \(1/2\), and all nonempty words agree only if \(X=\Sigma^*\). No finite assignment attains \(1/2\) here. If \(X\) contains all words of length at most \(h\), then \(\varphi\) contains exactly the words of lengths \(1,\ldots,h+1\), and the cost is \(1/2+2^{-h-2}\). Hence equality can change the answer even at a positive threshold.
+
+\section*{Research disclosure}
+Under human direction, ChatGPT Astra 6.2 (OpenAI) generated the discovery proof and its research packet. Claude Opus 5.5 (Anthropic) assisted with earlier audits and manuscript preparation. OpenAI Codex performed the mathematical review and revised the paper. GPT-6.2 Sol assisted with literature searches and release preparation. DannyExperiments maintains the repository and is the preferred citation identity. No AI system is proposed as an author. The replay provides finite computational corroboration. The work is internally reviewed and has yet to undergo peer review.
+
+\bibliographystyle{amsplain}
+\bibliography{references}
+\end{document}

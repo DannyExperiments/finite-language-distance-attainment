@@ -1,0 +1,18 @@
+{
+  "title": "Finite attainment for approximate language equations",
+  "upload_type": "software",
+  "creators": [
+    {
+      "name": "DannyExperiments"
+    }
+  ],
+  "description": "<p>Given two language expressions and a rational threshold, we decide if assigning finite languages to their variables makes the discounted symmetric-difference distance d₂ at most the threshold. The grammar uses finite constants, Boolean operations, and left concatenation by finite constants. The proof completes the optimal-transition construction proposed in Marantidis’s dissertation.</p><p>Includes the paper, source, proof outline, internal review, exact replay and an offline teaching explorer. Internally reviewed, not peer reviewed.</p><p>Under human direction, ChatGPT Astra 6.2 (OpenAI) generated the discovery proof and its research packet. Claude Opus 5.5 (Anthropic) assisted with earlier audits and manuscript preparation. OpenAI Codex performed the mathematical review and revised the paper. GPT-6.2 Sol assisted with literature searches and release preparation. DannyExperiments maintains the repository and is the preferred citation identity. No AI system is proposed as an author.</p>",
+  "keywords": [
+    "language equations",
+    "finite attainment",
+    "discounted distance",
+    "tree automata"
+  ],
+  "license": "other-closed",
+  "notes": "All rights reserved. No repository-wide reuse license is granted."
+}
