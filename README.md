@@ -9,6 +9,7 @@ Can finite languages be assigned to the variables of two expressions so that the
 [![Repository verification](https://github.com/DannyExperiments/finite-language-distance-attainment/actions/workflows/verify.yml/badge.svg?branch=main)](https://github.com/DannyExperiments/finite-language-distance-attainment/actions/workflows/verify.yml)
 [![Replay verification](https://github.com/DannyExperiments/finite-language-distance-attainment/actions/workflows/replay.yml/badge.svg?branch=main)](https://github.com/DannyExperiments/finite-language-distance-attainment/actions/workflows/replay.yml)
 [![PDF build](https://github.com/DannyExperiments/finite-language-distance-attainment/actions/workflows/pdf.yml/badge.svg?branch=main)](https://github.com/DannyExperiments/finite-language-distance-attainment/actions/workflows/pdf.yml)
+[![Partial Lean cutoff check](https://github.com/DannyExperiments/finite-language-distance-attainment/actions/workflows/lean.yml/badge.svg?branch=main)](https://github.com/DannyExperiments/finite-language-distance-attainment/actions/workflows/lean.yml)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24569242.svg)](https://doi.org/10.5281/zenodo.24569242)
 
 ## Same infimum, different answer
@@ -26,6 +27,8 @@ Each word is a node of a tree. Its action records membership in the finitely man
 Marantidis already computed the infimum and proposed retaining optimal transitions to test finite attainment. The paper proves that the global excess over the infimum is a sum of nonnegative local gaps, with a positive weight at each node. Thus an optimal assignment uses only optimal actions. The finite-support test first finds states that can use zero forever, then adds states whose optimal action sends every child toward that set. [Prior work and exact scope](audits/public_safe_reports/LITERATURE_AUDIT.md)
 
 ## Replay and review
+
+The [partial Lean certificate](formalization/README.md) proves the characterization of the zero-only region and the exact equivalence between each predecessor layer and existence of a bounded-depth optimal policy. The compiler, Bellman analysis and termination argument remain in the paper.
 
 The replay checks exact infima and finite witnesses, compares the compiler with direct word membership, and exhaustively checks the attainment condition on 1,296 small controllers. [Reproduce the checks](REPRODUCIBILITY.md) · [Review status](STATUS.md) · [Claim scope](CLAIM_SCOPE_AND_LIMITATIONS.md)
 

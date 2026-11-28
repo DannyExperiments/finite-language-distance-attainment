@@ -7,3 +7,4 @@
 | Completion of the dissertation's proposed construction | [Literature audit](audits/public_safe_reports/LITERATURE_AUDIT.md) | The $d_2$ language-equation problem in §6.4 |
 | Equal infima with different finite-attainment behavior | [Paper](paper/manuscript.pdf), Section 5, and [worked example](visualization/README.md) | Exact positive-threshold examples over a binary alphabet |
 | Replay agrees with direct evaluation and a separate cutoff computation | [Log](verification/logs/replay.txt) | Specified exact finite tests |
+| Zero-only region and predecessor-layer characterization | [Lean proof](formalization/Q311Cutoff.lean) | Arbitrary controller and optimality predicate, every cutoff depth |
